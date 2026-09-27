@@ -209,3 +209,8 @@ They can be installed side by side. When both are present, the token optimizer's
 ## License
 
 MIT
+
+## OpenCode 2.x
+
+- `src/index.v2.ts` — v2 plugin API entry (`{ id, setup }`): registers `track_task` / `check_duplicate` / `validate_task_scope` via `ctx.tool.transform` and pre-computes guidance into the context (`ctx.session.hook('context')`).
+- Compiles to `dist/index.v2.js` (no `package.json` change; `tsconfig` already includes `src/**`).
