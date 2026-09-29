@@ -116,7 +116,13 @@ export const TokenOptimizerV2Plugin = {
     }
     if (ctx?.session && typeof ctx.session.hook === "function") {
       ctx.session.hook("context", async (event: any) => {
-        if (event?.system && Array.isArray(event.system)) event.system.push(PRE_COMPUTE_GUIDANCE);
+        if (event?.system && Array.isArray(event.system)) {
+          // OpenCode v2 validates `system` against LLM.SystemPart, which is
+          // { type: "text", text: string }. Pushing a bare string fails schema
+          // validation; once it lands at system[4] or later the whole request
+          // fails, which breaks every turn from this session including subagents.
+          event.system.push({ type: "text", text: PRE_COMPUTE_GUIDANCE });
+        }
       });
     }
   },
